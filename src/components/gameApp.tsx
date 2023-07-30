@@ -3,11 +3,12 @@ import GuessInput from "./guessInput";
 import Poster from "./poster";
 
 const GameApp = () => {
+  const [search, setSearch] = useState<string>("");
 
   return (
     <div>
-      <GuessInput />
-      <Poster />
+      <GuessInput onChange={(value) => setSearch(value)} />
+      <Poster search={search} />
     </div>
   );
 };
