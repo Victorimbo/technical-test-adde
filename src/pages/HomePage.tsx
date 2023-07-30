@@ -1,10 +1,10 @@
 import React from "react";
-import Poster from "../components/poster";
+import GameApp from "../components/gameApp";
 
 const HomePage = () => {
     return(
         <div>
-            <Poster />
+            <GameApp />
         </div>
     )
 }

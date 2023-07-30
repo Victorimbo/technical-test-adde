@@ -24,8 +24,7 @@ const Poster = () => {
         fetchMovies();
       }, []);
     return(
-        <div>
-            <h1>Popular Movies</h1>
+        <div className="poster">
             <ul>
             {movies.map((movie) => (
                 <li key={movie.id}>
