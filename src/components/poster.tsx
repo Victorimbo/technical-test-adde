@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 
 interface Movie {
   id: number;
   title: string;
   poster_path: string;
+  blur: boolean;
 }
 
-const Poster = ({ search }) => {
+const Poster = ({ search, setSearch }) => {
+  const defaults: Pick<Movie, "blur"> = {
+    blur: true
+  };
+
   const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
@@ -17,20 +21,43 @@ const Poster = ({ search }) => {
         `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`
       );
       const data = await response.json();
-      setMovies(data.results.slice(0, 8));
+      setMovies(
+        data.results.slice(0, 8).map((movie) => ({
+          ...defaults,
+          ...movie
+        }))
+      );
     };
 
     fetchMovies();
   }, []);
 
+  useEffect(() => {
+    const matchedMovies = movies.map((movie) => ({
+      ...movie,
+      blur: isTitleMatched(movie.title) ? false : movie.blur
+    }));
+
+    setMovies(matchedMovies);
+  }, [search]);
+
   const isTitleMatched = (movieTitle: string) => {
-    return movieTitle.toLowerCase() === search.toLowerCase();
+    return search !== "" && movieTitle.toLowerCase() === search.toLowerCase();
   };
 
-    // const navigate = useNavigate();
-    // function DetailArtiste(id){
-    //     navigate('/DetailArtiste/'+id);
-    // }
+  const handleInputSubmit = (inputValue) => {
+    setSearch(inputValue);
+    if (inputValue === "") {
+      const clearBlurMovies = movies.map((movie) => ({ ...movie, blur: false }));
+      setMovies(clearBlurMovies);
+    } else {
+      const matchedMovies = movies.map((movie) => ({
+        ...movie,
+        blur: isTitleMatched(movie.title) ? false : movie.blur
+      }));
+      setMovies(matchedMovies);
+    }
+  };
 
   return (
     <div>
@@ -41,12 +68,12 @@ const Poster = ({ search }) => {
               src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
               alt={movie.title}
               style={{
-                filter: isTitleMatched(movie.title) ? "none" : "blur(5px)",
+                filter: movie.blur ? "blur(5px)" : "none"
               }}
             />
             <span
               style={{
-                visibility: isTitleMatched(movie.title) ? "visible" : "hidden",
+                visibility: movie.blur ? "hidden" : "visible"
               }}
             >
               {movie.title}
