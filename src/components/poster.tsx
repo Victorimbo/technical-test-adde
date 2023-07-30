@@ -24,8 +24,13 @@ const Poster = ({ search }) => {
   }, []);
 
   const isTitleMatched = (movieTitle: string) => {
-    return movieTitle.toLowerCase().includes(search.toLowerCase());
+    return movieTitle.toLowerCase() === search.toLowerCase();
   };
+
+    // const navigate = useNavigate();
+    // function DetailArtiste(id){
+    //     navigate('/DetailArtiste/'+id);
+    // }
 
   return (
     <div>
@@ -36,12 +41,12 @@ const Poster = ({ search }) => {
               src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
               alt={movie.title}
               style={{
-                filter: isTitleMatched(movie.title) ? "blur(5px)" : "none",
+                filter: isTitleMatched(movie.title) ? "none" : "blur(5px)",
               }}
             />
             <span
               style={{
-                visibility: isTitleMatched(movie.title) ? "hidden" : "visible",
+                visibility: isTitleMatched(movie.title) ? "visible" : "hidden",
               }}
             >
               {movie.title}
