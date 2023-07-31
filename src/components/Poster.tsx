@@ -47,9 +47,8 @@ const Poster = ({ search, setSearch }) => {
 
   const navigate = useNavigate();
   
-  // Function to handle click on an image
   const handleImageClick = (id: number) => {
-    const movie = movies.find((m) => m.id === id);
+    const movie = movies.find((movie) => movie.id === id);
     if (movie && !movie.blur) {
       navigate(`/details/${id}`);
     }
@@ -65,6 +64,7 @@ const Poster = ({ search, setSearch }) => {
               alt={movie.title}
               style={{
                 filter: movie.blur ? "blur(5px)" : "none",
+                border: movie.blur ? "none" : "2px solid green",
                 cursor: movie.blur ? "default" : "pointer"
               }}
               onClick={() => handleImageClick(movie.id)}

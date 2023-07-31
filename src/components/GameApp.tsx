@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Poster from "./poster";
-import GuessInput from "./guessInput";
+import Poster from "./Poster";
+import GuessInput from "./GuessInput";
 
 const GameApp = () => {
   const [search, setSearch] = useState<string>("");
