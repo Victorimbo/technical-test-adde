@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 
-const GuessInput = ({ onChange, onSubmit }) => {
+const GuessInput = ({ onSubmit }) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
     const { value } = event.target;
     setInputValue(value);
-    // onChange(value);
   };
 
   const handleSubmit = () => {
     onSubmit(inputValue);
     setInputValue("");
   };
+
+  onkeyup = (event) => {
+    if(event.key === 'Enter') {
+      handleSubmit();
+    }
+  }
 
   return (
     <div className="input-container">
