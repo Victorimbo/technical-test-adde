@@ -24,7 +24,6 @@ img {
   object-fit: cover;
   margin-bottom: 10px;
   border-radius: 10px;
-  border: 3px solid red;
 }
 
 span {
@@ -35,24 +34,41 @@ span {
 .input-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-bottom: 50px;
 }
 
 /* Details component */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: beige;
+}
+
+.contentContainer {
+  background-color: white;
+  margin: 20px auto;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
 .wrapper {
   width: 100%;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .posterDetails {
   width: 300px;
   height: auto;
   float: left;
+  margin-right: 20px;
 }
 
 .containerInfos {
-  width: 500px;
+  width: calc(100% - 340px);
   height: auto;
+  margin: 0 auto;
 }
 
 .title {
@@ -67,4 +83,15 @@ span {
 
 .cast {
   text-align: center;
+}
+
+.castContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.castItem {
+  text-align: center;
+  margin: 10px;
 }

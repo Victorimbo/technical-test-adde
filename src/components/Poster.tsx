@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Movie {
@@ -8,7 +8,7 @@ interface Movie {
   blur: boolean;
 }
 
-const Poster = ({ search, setSearch }) => {
+const Poster = ({ search }) => {
   const defaults: Pick<Movie, "blur"> = {
     blur: true
   };
@@ -17,7 +17,7 @@ const Poster = ({ search, setSearch }) => {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const apiKey = "d2d44f6354840ee02978b4d5ba9bcdfd"; // env var --> .env --> process.env.REACT_APP_...
+      const apiKey = "d2d44f6354840ee02978b4d5ba9bcdfd"; // env var --> .env --> process.env.REACT_APP_... process.env.REACT_APP_API_KEY
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`
       );

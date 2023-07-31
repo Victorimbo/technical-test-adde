@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Poster from "./Poster";
 import GuessInput from "./GuessInput";
 
 const GameApp = () => {
   const [search, setSearch] = useState<string>("");
 
-  const handleInputSubmit = (inputValue) => {
+  const handleInputSubmit = (inputValue: string) => {
     setSearch(inputValue);
   };
 
   return (
     <div>
-      <GuessInput onChange={(value) => setSearch(value)} onSubmit={handleInputSubmit} />
+    <div className="contentContainer">
+      <GuessInput onChange={(value: string) => setSearch(value)} onSubmit={handleInputSubmit} />
       <Poster search={search} />
+    </div>
     </div>
   );
 };

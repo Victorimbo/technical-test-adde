@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Avatar } from "@mui/material";
 
 interface Movie {
   id: number;
@@ -9,7 +10,9 @@ interface Movie {
   genres?: string[];
   runtime: number;
   release_date: Date,
-  cast?: string[];
+  casts: [],
+  cast?: string[],
+  profile_path?: string[];
 }
 
 const Details = () => {
@@ -24,12 +27,12 @@ const Details = () => {
         `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`
       );
       const movieData = await movieResponse.json();
-      console.log(movieData);
-
+      
       const creditsResponse = await fetch(
         `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`
-      );
-      const creditsData = await creditsResponse.json();
+        );
+        const creditsData = await creditsResponse.json();
+        console.log(creditsData);
 
       setMovie({
         id: movieData.id,
@@ -38,8 +41,10 @@ const Details = () => {
         overview: movieData.overview,
         release_date: movieData.release_date,
         runtime: movieData.runtime,
-        genres: movieData.genres.map((genre) => genre.name),
-        cast: creditsData.cast.slice(0, 8).map((actor) => actor.name)
+        genres: movieData.genres.map((genre: {name: string}) => genre.name),
+        casts: creditsData.cast.slice(0, 8),
+        cast: creditsData.cast.slice(0, 8).map((actor: {name: string}) => actor.name),
+        profile_path: creditsData.cast.slice(0, 8).map((actor: {profile_path: string}) => actor.profile_path)
       });
     };
 
@@ -51,7 +56,7 @@ const Details = () => {
   }
 
   return (
-    <div>
+    <div className="contentContainer">
       <h1 className="title">{movie.title}</h1>
       <div className="wrapper">
         <img className="posterDetails"
@@ -64,19 +69,27 @@ const Details = () => {
           <h3>Duration :</h3>
           <p>{movie.runtime} min</p>
           <h3>Genres :</h3>
-          <ul>
             {movie.genres &&
-              movie.genres.map((genre, index) => <li key={index}>{genre}</li>)}
-          </ul>
+              movie.genres.map((genre, index) => <p key={index}>{genre}</p>)}
           <h3>Resume :</h3>
           <p className="overview">{movie.overview}</p>
         </span>
       </div>
-          <h3 className="cast">Cast :</h3>
-          <ul>
-            {movie.cast &&
-              movie.cast.map((actor, index) => <li key={index}>{actor}</li>)}
-          </ul>
+      <h3 className="cast">Cast :</h3>
+      <div className="castContainer">
+        {movie.casts &&
+          movie.casts.map((cast, index) => (
+            <div key={index} className="castItem">
+              <Avatar
+                className="posterDetails"
+                src={`https://image.tmdb.org/t/p/w200/${cast.profile_path}`}
+                sx={{ width: 150, height: 150 }}
+                alt={cast.name}
+              />
+              <p className="actorName">{cast.name}</p>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
