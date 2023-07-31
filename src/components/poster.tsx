@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Movie {
   id: number;
@@ -16,7 +17,7 @@ const Poster = ({ search, setSearch }) => {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const apiKey = "d2d44f6354840ee02978b4d5ba9bcdfd";
+      const apiKey = "d2d44f6354840ee02978b4d5ba9bcdfd"; // env var --> .env --> process.env.REACT_APP_...
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`
       );
@@ -37,7 +38,6 @@ const Poster = ({ search, setSearch }) => {
       ...movie,
       blur: isTitleMatched(movie.title) ? false : movie.blur
     }));
-
     setMovies(matchedMovies);
   }, [search]);
 
@@ -45,17 +45,13 @@ const Poster = ({ search, setSearch }) => {
     return search !== "" && movieTitle.toLowerCase() === search.toLowerCase();
   };
 
-  const handleInputSubmit = (inputValue) => {
-    setSearch(inputValue);
-    if (inputValue === "") {
-      const clearBlurMovies = movies.map((movie) => ({ ...movie, blur: false }));
-      setMovies(clearBlurMovies);
-    } else {
-      const matchedMovies = movies.map((movie) => ({
-        ...movie,
-        blur: isTitleMatched(movie.title) ? false : movie.blur
-      }));
-      setMovies(matchedMovies);
+  const navigate = useNavigate();
+  
+  // Function to handle click on an image
+  const handleImageClick = (id: number) => {
+    const movie = movies.find((m) => m.id === id);
+    if (movie && !movie.blur) {
+      navigate(`/details/${id}`);
     }
   };
 
@@ -68,8 +64,10 @@ const Poster = ({ search, setSearch }) => {
               src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
               alt={movie.title}
               style={{
-                filter: movie.blur ? "blur(5px)" : "none"
+                filter: movie.blur ? "blur(5px)" : "none",
+                cursor: movie.blur ? "default" : "pointer"
               }}
+              onClick={() => handleImageClick(movie.id)}
             />
             <span
               style={{
