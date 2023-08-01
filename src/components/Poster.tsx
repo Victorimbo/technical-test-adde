@@ -17,7 +17,7 @@ const Poster = ({ search }) => {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const apiKey = "d2d44f6354840ee02978b4d5ba9bcdfd"; // env var --> .env --> process.env.REACT_APP_... process.env.REACT_APP_API_KEY
+      const apiKey = import.meta.env.VITE_APP_API_KEY;
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`
       );
